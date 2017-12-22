@@ -36,13 +36,13 @@ public class ServerMain {
         // 设置Raft选项，比如：
         // just for test snapshot
         RaftOptions raftOptions = new RaftOptions();
-        raftOptions.setSnapshotMinLogSize(10 * 1024);
-        raftOptions.setSnapshotPeriodSeconds(30);
-        raftOptions.setMaxSegmentFileSize(1024 * 1024);
+
         // 应用状态机
-        ExampleStateMachine stateMachine = new ExampleStateMachine(raftOptions.getDataDir());
+        ExampleStateMachine stateMachine =
+        	new ExampleStateMachine(raftOptions.dataDir);
+
         // 初始化RaftNode
-        RaftNode raftNode = new RaftNode(raftOptions, serverList, localServer, stateMachine);
+        RaftNode raftNode = new RaftNode(serverList, localServer, stateMachine);
         // 注册Raft节点之间相互调用的服务
         RaftConsensusService raftConsensusService = new RaftConsensusServiceImpl(raftNode);
         server.registerService(raftConsensusService);

@@ -5,8 +5,8 @@ import com.github.wenweihu86.raft.proto.RaftMessage;
 /**
  * Created by wenweihu86 on 2017/5/14.
  */
-public interface RaftClientService {
-
+public interface RaftClientService
+{
     RaftMessage.GetLeaderResponse getLeader(RaftMessage.GetLeaderRequest request);
 
     RaftMessage.GetConfigurationResponse getConfiguration(RaftMessage.GetConfigurationRequest request);

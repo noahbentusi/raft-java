@@ -256,8 +256,7 @@ public class RaftConsensusServiceImpl implements RaftConsensusService {
         if (request.getIsLast() && responseBuilder.getResCode() == RaftMessage.ResCode.RES_CODE_SUCCESS) {
             // apply state machine
             // TODO: make this async
-            String snapshotDataDir = raftNode.getSnapshot().getSnapshotDir() + File.separator + "data";
-            raftNode.getStateMachine().readSnapshot(snapshotDataDir);
+            raftNode.getStateMachine().readSnapshot(raftNode.getSnapshot());
             long lastSnapshotIndex;
             // 重新加载snapshot
             raftNode.getSnapshot().getLock().lock();

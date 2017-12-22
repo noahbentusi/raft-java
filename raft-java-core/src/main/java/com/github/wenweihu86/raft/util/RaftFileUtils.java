@@ -82,17 +82,19 @@ public class RaftFileUtils {
         }
     }
 
-    public static <T extends GeneratedMessageV3> T readProtoFromFile(RandomAccessFile raf, Class<T> clazz) {
+    public static <T extends GeneratedMessageV3> T
+    	readProtoFromFile(DataInputStream raf, int length, Class<T> clazz)
+    {
         try {
             long crc32FromFile = raf.readLong();
             int dataLen = raf.readInt();
             int hasReadLen = (Long.SIZE + Integer.SIZE) / Byte.SIZE;
-            if (raf.length() - hasReadLen < dataLen) {
+            if (length - hasReadLen < dataLen) {
                 LOG.warn("file remainLength < dataLen");
                 return null;
             }
             byte[] data = new byte[dataLen];
-            int readLen = raf.read(data);
+            int readLen = raf.read(data, 0, data.length);
             if (readLen != dataLen) {
                 LOG.warn("readLen != dataLen");
                 return null;
@@ -111,7 +113,9 @@ public class RaftFileUtils {
         }
     }
 
-    public static  <T extends GeneratedMessageV3> void writeProtoToFile(RandomAccessFile raf, T message) {
+    public static  <T extends GeneratedMessageV3>
+    	void writeProtoToFile(DataOutputStream raf, T message)
+    {
         byte[] messageBytes = message.toByteArray();
         long crc32 = getCRC32(messageBytes);
         try {
